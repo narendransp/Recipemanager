@@ -8,7 +8,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["http://localhost:5173","https://recipemanager-six.vercel.app"],
+  origin: ["http://localhost:5173","https://recipemanager-six.vercel.app","https://recipemanager-w8p5.vercel.app"],
   credentials: true
 }));
 
