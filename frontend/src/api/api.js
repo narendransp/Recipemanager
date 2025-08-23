@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'https://recipemanager-4g1t.onrender.com/api'});
+const API = axios.create({ baseURL: 'https://recipemanager-4g1t.onrender.com/api',withCredentials: true
+});
 
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
