@@ -37,15 +37,15 @@ export default function ViewRecipeModal({ isOpen, onClose, recipeId }) {
         <h2 className="text-3xl font-bold text-gray-800 mb-4">{recipe.title}</h2>
 
         {/* Recipe Image */}
-        {recipe.image && (
-          <div className="w-full h-64 md:h-80 overflow-hidden rounded-xl mb-4">
-            <img
-              src={`http://localhost:5000${recipe.image}`}
+       {recipe.image && (
+         <div className="w-full h-64 md:h-80 overflow-hidden rounded-xl mb-4">
+          <img
+              src={`${import.meta.env.VITE_API_URL}${recipe.image}`}
               alt={recipe.title}
               className="w-full h-full object-cover"
             />
           </div>
-        )}
+          )}
 
         {/* Ingredients */}
         <div className="bg-gray-100 rounded-lg p-4 mb-4">
