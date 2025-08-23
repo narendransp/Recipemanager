@@ -20,7 +20,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md px-6 py-3 flex justify-between items-center">
+    <nav className="bg-white shadow-md px-6 py-3 flex justify-between items-center z-50">
       {/* Left: Logo */}
       <div className="flex items-center gap-2">
         <img src={food} alt="Food logo" className="w-10 h-10" />
@@ -35,7 +35,7 @@ export default function Navbar() {
       </div>
 
       {/* Links */}
-      <div className={`flex flex-col md:flex-row md:items-center gap-4 absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent px-6 py-4 md:p-0 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+      <div className={`flex flex-col md:flex-row md:items-center gap-4 absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent px-6 py-4 md:p-0 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`} md:translate-x-0 z-40>
         <Link to="/home" className="hover:text-green-600" onClick={() => setIsOpen(false)}>Home</Link>
 
         {loggedIn ? (
