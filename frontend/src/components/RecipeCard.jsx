@@ -4,7 +4,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
   const isOwner = recipe.userId === currentUserId; //
 
   return (
-    <div className="bg-white rounded-l shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 min-w-[280px] max-w-sm flex-shrink-0">
       {recipe.image ? (
         <img
           src={`http://localhost:5000${recipe.image}`}
@@ -17,7 +17,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
         </div>
       )}
 
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col ">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-semibold">{recipe.title}</h3>
           <button
