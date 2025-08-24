@@ -7,7 +7,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[420px] flex-shrink-0">
       {recipe.image ? (
         <img
-          src={`http://localhost:5000${recipe.image}`}
+          src={`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
           alt={recipe.title}
           className="h-40 w-full object-cover"
         />
