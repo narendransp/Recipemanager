@@ -114,53 +114,6 @@ const getMyRecipes = async (req, res) => {
 
 
 
-
-// Pin a recipe
-const pinRecipe = async (req, res) => {
-  try {
-    const recipe = await Recipe.findById(req.params.id);
-    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
-
-    // Add user to pinnedBy if not already
-    if (!recipe.pinnedBy.includes(req.user._id)) {
-      recipe.pinnedBy.push(req.user._id);
-      await recipe.save();
-    }
-
-    res.json({ message: "Recipe pinned successfully", recipe });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Unpin a recipe
-const unpinRecipe = async (req, res) => {
-  try {
-    const recipe = await Recipe.findById(req.params.id);
-    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
-
-    recipe.pinnedBy = recipe.pinnedBy.filter(
-      (uid) => uid.toString() !== req.user._id.toString()
-    );
-    await recipe.save();
-
-    res.json({ message: "Recipe unpinned successfully", recipe });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Get all pinned recipes of logged-in user
-const getPinnedRecipes = async (req, res) => {
-  try {
-    const recipes = await Recipe.find({ pinnedBy: req.user._id });
-    res.json(recipes);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-
 module.exports = {
   getRecipes,
   addRecipe,
@@ -168,7 +121,4 @@ module.exports = {
   updateRecipe,
   deleteRecipe,
   getMyRecipes,
-  pinRecipe,
-  unpinRecipe,
-  getPinnedRecipes
 };

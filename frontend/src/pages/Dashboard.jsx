@@ -17,7 +17,6 @@ export default function Dashboard({ currentUserId }) {
 
   useEffect(() => {
     fetchRecipes();
-    fetchPinnedRecipes()
   }, []);
 
   const fetchRecipes = async () => {
@@ -29,16 +28,7 @@ export default function Dashboard({ currentUserId }) {
       alert("Error fetching recipes");
     }
   };
-
-
-  const fetchPinnedRecipes = async () => {
-  try {
-    const { data } = await API.get("/recipes/pinned"); // backend route
-    setPinned(data.map(r => r._id)); // store only IDs
-  } catch (err) {
-    console.error("Error fetching pinned recipes", err);
-  }
-};
+  
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
@@ -51,14 +41,9 @@ export default function Dashboard({ currentUserId }) {
     }
   };
 
-  const togglePin = async (id) => {
-  try {
-    const { data } = await API.post(`/recipes/${id}/pin`);
-    setPinned(data.pinned);
-  } catch (err) {
-    console.error("Error pinning recipe", err);
-  }
-};
+  const togglePin = (id) => {
+    setPinned(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]);
+  };
 
   const handleEdit = (recipe) => {
     setEditingRecipeId(recipe._id);
