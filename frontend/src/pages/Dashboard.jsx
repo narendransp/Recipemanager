@@ -77,6 +77,30 @@ export default function Dashboard({ currentUserId }) {
         </button>
       </div>
 
+{/* Pinned Recipes Section */}
+  {pinned.length > 0 && (
+  <div className="mt-10">
+    <h2 className="text-xl font-bold mb-4">📌 Pinned Recipes</h2>
+    <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+      {recipes
+        .filter(r => pinned.includes(r._id))
+        .map(r => (
+          <div key={r._id} className="min-w-[280px] flex-shrink-0">
+            <RecipeCard
+              recipe={r}
+              pinned={true}
+              togglePin={togglePin}
+              handleDelete={handleDelete}
+              onEdit={handleEdit}
+              onView={handleView}
+              currentUserId={currentUserId}
+            />
+          </div>
+        ))}
+    </div>
+  </div>
+)}
+
       {/* Recipes Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredRecipes.map(r => (
