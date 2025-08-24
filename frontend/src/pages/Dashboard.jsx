@@ -79,13 +79,31 @@ export default function Dashboard({ currentUserId }) {
 
 {/* Pinned Recipes Section */}
   {pinned.length > 0 && (
-  <div className="mt-10">
-    <h2 className="text-xl font-bold mb-4">➤ Saved  Recipes</h2>
-    <div className="flex flex-nowrap space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+  <div className="mt-10 relative">
+    <h2 className="text-xl font-bold mb-4">➤ Saved Recipes</h2>
+
+    {/* Left Arrow */}
+    <button
+      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+      onClick={() =>
+        document.getElementById("pinnedSlider").scrollBy({ left: -300, behavior: "smooth" })
+      }
+    >
+      ◀
+    </button>
+
+    {/* Slider */}
+    <div
+      id="pinnedSlider"
+      className="flex flex-nowrap space-x-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+    >
       {recipes
-        .filter(r => pinned.includes(r._id))
-        .map(r => (
-          <div key={r._id} className="min-w-[280px] flex-shrink-0  flex-grow-0">
+        .filter((r) => pinned.includes(r._id))
+        .map((r) => (
+          <div
+            key={r._id}
+            className="min-w-[280px] flex-shrink-0 flex-grow-0"
+          >
             <RecipeCard
               recipe={r}
               pinned={true}
@@ -98,8 +116,19 @@ export default function Dashboard({ currentUserId }) {
           </div>
         ))}
     </div>
+
+    {/* Right Arrow */}
+    <button
+      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+      onClick={() =>
+        document.getElementById("pinnedSlider").scrollBy({ left: 300, behavior: "smooth" })
+      }
+    >
+      ▶
+    </button>
   </div>
 )}
+
 <div className="mt-10">
   <h2 className="text-xl font-bold mb-10"> Recipes</h2>
 </div>
