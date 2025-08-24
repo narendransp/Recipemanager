@@ -81,7 +81,7 @@ export default function Dashboard({ currentUserId }) {
   {pinned.length > 0 && (
   <div className="mt-10">
     <h2 className="text-xl font-bold mb-4">📌 Pinned Recipes</h2>
-    <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+    <div className="flex flex-nowrap space-x-4 overflow-x-auto pb-4 scrollbar-hide">
       {recipes
         .filter(r => pinned.includes(r._id))
         .map(r => (
