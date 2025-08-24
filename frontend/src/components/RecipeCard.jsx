@@ -1,7 +1,7 @@
 import React from "react";
 
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-  const isOwner = recipe.userId === currentUserId; //
+  const isOwner = recipe.user === currentUserId; //
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[420px] flex-shrink-0">
