@@ -21,4 +21,9 @@ router.get("/my-recipes", authMiddleware, recipeController.getMyRecipes);
 router.get("/", recipeController.getRecipes);
 router.get("/:id", recipeController.getRecipeById);
 
+
+
+router.post("/:id/pin",authMiddleware , recipeController.pinRecipe);
+router.post("/:id/unpin", authMiddleware, recipeController.unpinRecipe);
+router.get("/pinned/me", authMiddleware,  recipeController.getPinnedRecipes);
 module.exports = router;
