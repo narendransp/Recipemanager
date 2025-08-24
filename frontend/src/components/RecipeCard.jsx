@@ -1,7 +1,9 @@
 import React from "react";
 
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-   const isOwner = recipe.userId === currentUserId || recipe.user === currentUserId;// Check if logged-in user owns the recipe
+   const isOwner =
+  recipe.user?.toString() === currentUserId?.toString() ||
+  recipe.user?._id?.toString() === currentUserId?.toString();// Check if logged-in user owns the recipe
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[500px] flex-shrink-0">
@@ -61,8 +63,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           </button>
 
           {/* Only show Edit/Delete if user is owner */}
-          {isOwner && (
-            <>
+ 
               <button
                 onClick={() => onEdit(recipe)}
                 className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
@@ -76,8 +77,6 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
               >
                 Delete
               </button>
-            </>
-          )}
         </div>
       </div>
     </div>
