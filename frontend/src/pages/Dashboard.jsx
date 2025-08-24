@@ -95,7 +95,7 @@ export default function Dashboard({ currentUserId }) {
     {/* Slider */}
     <div
       id="pinnedSlider"
-      className="flex flex-nowrap space-x-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+      className="flex flex-nowrap space-x-4 overflow-x-auto px-10 scrollbar-hide scroll-smooth"
     >
       {recipes
         .filter((r) => pinned.includes(r._id))
@@ -119,7 +119,7 @@ export default function Dashboard({ currentUserId }) {
 
     {/* Right Arrow */}
     <button
-      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
       onClick={() =>
         document.getElementById("pinnedSlider").scrollBy({ left: 300, behavior: "smooth" })
       }
