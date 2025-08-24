@@ -64,11 +64,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           <button
             onClick={() => isOwner && onEdit(recipe)}
             disabled={!isOwner}
-            className={`flex-1 text-center px-3 py-2 rounded-lg transition-colors ${
-              isOwner
-                ? "bg-black text-white hover:bg-yellow-500"
-                : "bg-gray-400 text-gray-200 cursor-not-allowed"
-            }`}
+            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
           >
             Edit
           </button>
@@ -77,11 +73,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           <button
             onClick={() => isOwner && handleDelete(recipe._id)}
             disabled={!isOwner}
-            className={`flex-1 text-center px-3 py-2 rounded-lg transition-colors ${
-              isOwner
-                ? "bg-black text-white hover:bg-red-600"
-                : "bg-gray-400 text-gray-200 cursor-not-allowed"
-            }`}
+            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
           >
             Delete
           </button>
