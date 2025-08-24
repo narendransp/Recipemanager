@@ -1,7 +1,7 @@
 import React from "react";
 
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-  const isOwner = recipe.userId === currentUserId; //
+  const isOwner = recipe.userId === currentUserId; // Check if logged-in user owns the recipe
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[420px] flex-shrink-0">
@@ -23,7 +23,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           <button
             onClick={() => togglePin(recipe._id)}
             className="text-sm text-gray-500 hover:text-gray-700"
-             style={{ fontSize: "2rem" }}
+            style={{ fontSize: "2rem" }}
           >
             {pinned ? "⮜" : "⌲"}
           </button>
@@ -49,6 +49,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
         </div>
 
         <div className="mt-auto flex gap-2">
+          {/* View button (always enabled) */}
           <button
             onClick={() => onView(recipe)}
             className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -56,23 +57,31 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             View
           </button>
 
-          {isOwner && (
-            <>
-              <button
-                onClick={() => onEdit(recipe)}
-                className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-yellow-500 transition-colors"
-              >
-                Edit
-              </button>
+          {/* Edit button (disabled if not owner) */}
+          <button
+            onClick={() => isOwner && onEdit(recipe)}
+            disabled={!isOwner}
+            className={`flex-1 text-center px-3 py-2 rounded-lg transition-colors ${
+              isOwner
+                ? "bg-black text-white hover:bg-yellow-500"
+                : "bg-gray-400 text-gray-200 cursor-not-allowed"
+            }`}
+          >
+            Edit
+          </button>
 
-              <button
-                onClick={() => handleDelete(recipe._id)}
-                className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
-              >
-                Delete
-              </button>
-            </>
-          )}
+          {/* Delete button (disabled if not owner) */}
+          <button
+            onClick={() => isOwner && handleDelete(recipe._id)}
+            disabled={!isOwner}
+            className={`flex-1 text-center px-3 py-2 rounded-lg transition-colors ${
+              isOwner
+                ? "bg-black text-white hover:bg-red-600"
+                : "bg-gray-400 text-gray-200 cursor-not-allowed"
+            }`}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
