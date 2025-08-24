@@ -4,7 +4,8 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
   const isOwner = recipe.user === currentUserId; // Check if logged-in user owns the recipe
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[420px] flex-shrink-0">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 flex-shrink-0">
+      {/* Recipe Image */}
       {recipe.image ? (
         <img
           src={`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
@@ -17,7 +18,8 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
         </div>
       )}
 
-      <div className="p-4 flex flex-col ">
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-semibold line-clamp-2">{recipe.title}</h3>
           <button
@@ -48,6 +50,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           ))}
         </div>
 
+        {/* Action Buttons - always at bottom */}
         <div className="mt-auto flex gap-2">
           {/* View button (always enabled) */}
           <button
@@ -57,7 +60,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             View
           </button>
 
-          {/* Edit button (disabled if not owner) */}
+          {/* Edit button */}
           <button
             onClick={() => isOwner && onEdit(recipe)}
             disabled={!isOwner}
@@ -70,7 +73,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             Edit
           </button>
 
-          {/* Delete button (disabled if not owner) */}
+          {/* Delete button */}
           <button
             onClick={() => isOwner && handleDelete(recipe._id)}
             disabled={!isOwner}
