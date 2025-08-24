@@ -25,7 +25,7 @@ const addRecipe = async (req, res) => {
       instructions: req.body.instructions,
       ingredients: req.body.ingredients ? JSON.parse(req.body.ingredients) : [],
       tags: req.body.tags ? JSON.parse(req.body.tags) : [],
-      image: req.file ? req.file.filename : null,
+      image: req.file ? `/uploads/${req.file.filename}` : null,
       public: req.body.public ?? true,
       user: req.user._id // use 'user' here
     });
@@ -68,7 +68,7 @@ const updateRecipe = async (req, res) => {
     recipe.instructions = req.body.instructions;
     recipe.ingredients = req.body.ingredients ? JSON.parse(req.body.ingredients) : [];
     recipe.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
-    if (req.file) recipe.image = req.file.filename;
+    if (req.file) recipe.image = `/uploads/${req.file.filename}`;
     recipe.public = req.body.public ?? recipe.public;
 
     await recipe.save();
