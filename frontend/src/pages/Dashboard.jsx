@@ -104,7 +104,7 @@ export default function Dashboard({ currentUserId }) {
   <h2 className="text-xl font-bold mb-10"> Recipes</h2>
 </div>
       {/* Recipes Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {filteredRecipes.map(r => (
           <RecipeCard
             key={r._id}
