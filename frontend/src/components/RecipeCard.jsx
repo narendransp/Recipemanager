@@ -25,7 +25,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             className="text-sm text-gray-500 hover:text-gray-700"
              style={{ fontSize: "2rem" }}
           >
-            {pinned ? " ⌲" : "⮜"}
+            {pinned ? "⮜" : "⌲"}
           </button>
         </div>
 
