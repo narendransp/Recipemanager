@@ -31,6 +31,7 @@ const Home = () => {
         <li><strong>Edit/Delete:</strong> You can always update or remove your recipe from your <em>My Recipes</em> section.</li>
       </ul>
     </section>
+    
     </div>
   );
 };

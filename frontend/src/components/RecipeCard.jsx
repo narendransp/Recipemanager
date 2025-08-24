@@ -24,7 +24,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             onClick={() => togglePin(recipe._id)}
             className="text-sm text-gray-500 hover:text-gray-700"
           >
-            {pinned ? "📌" : "📍"}
+            {pinned ? " ⌲" : "📍"}
           </button>
         </div>
 
