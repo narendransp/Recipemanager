@@ -80,7 +80,7 @@ export default function Dashboard({ currentUserId }) {
 {/* Pinned Recipes Section */}
   {pinned.length > 0 && (
   <div className="mt-10">
-    <h2 className="text-xl font-bold mb-4">📌 Pinned Recipes</h2>
+    <h2 className="text-xl font-bold mb-4"><FontAwesomeIcon icon={byPrefixAndName.far['bookmark']} /> Recipes</h2>
     <div className="flex flex-nowrap space-x-4 overflow-x-auto pb-4 scrollbar-hide">
       {recipes
         .filter(r => pinned.includes(r._id))
@@ -100,9 +100,11 @@ export default function Dashboard({ currentUserId }) {
     </div>
   </div>
 )}
-
+<div className="mt-10">
+  <h2 className="text-xl font-bold mb-10"> Recipes</h2>
+</div>
       {/* Recipes Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 space-x-4">
         {filteredRecipes.map(r => (
           <RecipeCard
             key={r._id}
