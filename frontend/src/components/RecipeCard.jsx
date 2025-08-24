@@ -1,10 +1,10 @@
 import React from "react";
 
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-  const isOwner = recipe.user === currentUserId; // Check if logged-in user owns the recipe
+   const isOwner = recipe.userId === currentUserId || recipe.user === currentUserId;// Check if logged-in user owns the recipe
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 flex-shrink-0">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[500px] flex-shrink-0">
       {/* Recipe Image */}
       {recipe.image ? (
         <img
@@ -55,26 +55,29 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           {/* View button (always enabled) */}
           <button
             onClick={() => onView(recipe)}
-            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
           >
             View
           </button>
 
-          {/* Edit button */}
-          <button
-            onClick={() =>  onEdit(recipe)}
-            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
-          >
-            Edit
-          </button>
+          {/* Only show Edit/Delete if user is owner */}
+          {isOwner && (
+            <>
+              <button
+                onClick={() => onEdit(recipe)}
+                className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Edit
+              </button>
 
-          {/* Delete button */}
-          <button
-            onClick={() =>  handleDelete(recipe._id)}
-            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
-          >
-            Delete
-          </button>
+              <button
+                onClick={() => handleDelete(recipe._id)}
+                className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

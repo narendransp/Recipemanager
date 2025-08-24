@@ -19,7 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard currentUserId={localStorage.getItem("userId")}/>} />
         <Route path="/home" element={<Home />} />
         <Route path="/edit-recipe/:id" element={<EditRecipe />} />
           <Route 

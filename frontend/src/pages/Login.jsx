@@ -17,6 +17,7 @@ export default function AuthPage() {
         const { data } = await API.post("/auth/login", { email, password });
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.name);
+        localStorage.setItem("userId", data.userId);
         navigate("/dashboard");
       } else {
         // REGISTER
