@@ -12,26 +12,31 @@ export default function EditRecipeOverlay({ recipeId, onClose, onUpdate }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const { data } = await API.get(`/recipes/${recipeId}`);
-        setTitle(data.title || "");
-        setIngredients(data.ingredients ? data.ingredients.join(", ") : "");
-        setInstructions(data.instructions || "");
-        setTags(data.tags ? data.tags.join(", ") : "");
-        setIsPublic(data.public ?? true);
-        if (data.image) setPreview(`http://localhost:5000/${data.image}`);
-      } catch (err) {
-        console.error(err);
-        alert("Error fetching recipe");
-        onClose();
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRecipe = async () => {
+    try {
+      const token = localStorage.getItem("token"); // ⬅️ add this
+      const { data } = await API.get(`/recipes/${recipeId}`, {
+        headers: { Authorization: `Bearer ${token}` }, // ⬅️ send token
+      });
 
-    if (recipeId) fetchRecipe();
-  }, [recipeId]);
+      setTitle(data.title || "");
+      setIngredients(data.ingredients ? data.ingredients.join(", ") : "");
+      setInstructions(data.instructions || "");
+      setTags(data.tags ? data.tags.join(", ") : "");
+      setIsPublic(data.public ?? true);
+      if (data.image) setPreview(`http://localhost:5000/${data.image}`);
+    } catch (err) {
+      console.error(err);
+      alert("Error fetching recipe");
+      onClose();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (recipeId) fetchRecipe();
+}, [recipeId]);
+    
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
