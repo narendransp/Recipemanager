@@ -85,7 +85,7 @@ export default function Dashboard({ currentUserId }) {
       {recipes
         .filter(r => pinned.includes(r._id))
         .map(r => (
-          <div key={r._id} className="min-w-[280px] flex-shrink-0">
+          <div key={r._id} className="min-w-[280px] flex-shrink-0  flex-grow-0">
             <RecipeCard
               recipe={r}
               pinned={true}
