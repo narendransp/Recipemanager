@@ -65,6 +65,7 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
             View
           </button>
 
+<<<<<<< HEAD
           {/* Only show Edit/Delete if user is owner */}
 
 
@@ -87,6 +88,25 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
               </>
           )}
 
+=======
+          {/* Edit button */}
+          <button
+            onClick={() =>  onEdit(recipe)}
+            disabled={!isOwner}
+            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
+          >
+            Edit
+          </button>
+
+          {/* Delete button */}
+          <button
+            onClick={() =>  handleDelete(recipe._id)}
+            disabled={!isOwner}
+            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
+          >
+            Delete
+          </button>
+>>>>>>> parent of f05a99b (update)
         </div>
       </div>
     </div>

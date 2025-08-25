@@ -1,4 +1,5 @@
 const Recipe = require("../models/Recipe");
+const User = require("../models/User");
 
 // Get all recipes: public for everyone + own private recipes
 const getRecipes = async (req, res) => {
@@ -26,7 +27,7 @@ const addRecipe = async (req, res) => {
       ingredients: req.body.ingredients ? JSON.parse(req.body.ingredients) : [],
       tags: req.body.tags ? JSON.parse(req.body.tags) : [],
       image: req.file ? `/uploads/${req.file.filename}` : null,
-      public: req.body.public ?? true,
+      public: req.body.public === "true" || req.body.public === true,
       user: req.user._id // use 'user' here
     });
 
@@ -39,44 +40,50 @@ const addRecipe = async (req, res) => {
 };
 
 // Get a recipe by ID
+
+
 const getRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) return res.status(404).json({ message: "Recipe not found" });
-
-    if (!recipe.public && recipe.user.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not authorized to view this recipe" });
-    }
-
     res.json(recipe);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Update a recipe (only owner)
 const updateRecipe = async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
-    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+    // Build update data
+    const updateData = {
+      title: req.body.title,
+      instructions: req.body.instructions,
+      ingredients: req.body.ingredients ? JSON.parse(req.body.ingredients) : [],
+      tags: req.body.tags ? JSON.parse(req.body.tags) : []
+    };
 
-    if (recipe.user.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not authorized to update this recipe" });
+    // ✅ Only update image if new file is uploaded
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
     }
 
-    recipe.title = req.body.title;
-    recipe.instructions = req.body.instructions;
-    recipe.ingredients = req.body.ingredients ? JSON.parse(req.body.ingredients) : [];
-    recipe.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
-    if (req.file) recipe.image = `/uploads/${req.file.filename}`;
-    recipe.public = req.body.public ?? recipe.public;
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
 
-    await recipe.save();
-    res.json(recipe);
+    if (!updatedRecipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    res.json(updatedRecipe);
   } catch (err) {
+    console.error("Error in updateRecipe:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Delete a recipe (only owner)
 const deleteRecipe = async (req, res) => {
@@ -104,6 +111,7 @@ const deleteRecipe = async (req, res) => {
 // Get only recipes of the logged-in user
 const getMyRecipes = async (req, res) => {
   try {
+    console.log("User from token:", req.user);
     const userId = req.user._id;
     const recipes = await Recipe.find({ user: userId }); // use 'user' here
     res.json(recipes);
@@ -114,6 +122,39 @@ const getMyRecipes = async (req, res) => {
 
 
 
+
+
+const getPinnedRecipes = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate("pinnedRecipes");
+    res.json(user.pinnedRecipes || []);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Toggle pin/unpin recipe
+const togglePinnedRecipe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const recipeId = req.params.id;
+
+    if (user.pinnedRecipes.includes(recipeId)) {
+      user.pinnedRecipes = user.pinnedRecipes.filter(r => r.toString() !== recipeId);
+    } else {
+      user.pinnedRecipes.unshift(recipeId);
+    }
+
+    await user.save();
+    res.json(user.pinnedRecipes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
 module.exports = {
   getRecipes,
   addRecipe,
@@ -121,4 +162,6 @@ module.exports = {
   updateRecipe,
   deleteRecipe,
   getMyRecipes,
+  getPinnedRecipes,
+  togglePinnedRecipe
 };

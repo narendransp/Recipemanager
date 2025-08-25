@@ -4,6 +4,8 @@ const multer = require("multer");
 const recipeController = require("../controllers/recipeController");
 const authMiddleware = require("../middleware/authMiddleware"); // import your auth middleware
 
+
+
 // Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -23,4 +25,4 @@ router.get("/:id", recipeController.getRecipeById);
 
 
 
-module.exports = router;
+module.exports = rout;
