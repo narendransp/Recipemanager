@@ -64,8 +64,6 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           >
             View
           </button>
-
-<<<<<<< HEAD
           {/* Only show Edit/Delete if user is owner */}
 
 
@@ -88,7 +86,6 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
               </>
           )}
 
-=======
           {/* Edit button */}
           <button
             onClick={() =>  onEdit(recipe)}
@@ -106,7 +103,6 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           >
             Delete
           </button>
->>>>>>> parent of f05a99b (update)
         </div>
       </div>
     </div>
