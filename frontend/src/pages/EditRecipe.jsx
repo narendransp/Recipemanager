@@ -24,7 +24,7 @@ export default function EditRecipeOverlay({ recipeId, onClose, onUpdate }) {
       setInstructions(data.instructions || "");
       setTags(data.tags ? data.tags.join(", ") : "");
       setIsPublic(data.public ?? true);
-      if (data.image) setPreview(`http://localhost:5000/${data.image}`);
+      if (data.image) setPreview(`https://recipemanager-4g1t.onrender.com/api${data.image}`);
     } catch (err) {
       console.error(err);
       alert("Error fetching recipe");

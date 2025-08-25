@@ -12,12 +12,12 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[500px] flex-shrink-0">
       {/* Recipe Image */}
       {recipe.image ? (
-        <img
-  src={`${import.meta.env.VITE_API_URL}${recipe.image}`}
-  alt={recipe.title}
-  className="h-40 w-full object-cover"
-/>
-      ) : (
+  <img
+    src={`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
+    alt={recipe.title}
+    className="h-40 w-full object-cover"
+  />
+) : (
         <div className="h-40 w-full bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
         </div>
