@@ -25,4 +25,11 @@ router.get("/:id", recipeController.getRecipeById);
 
 
 
+<<<<<<< HEAD
 module.exports = rout;
+=======
+router.post("/:id/pin",authMiddleware , recipeController.pinRecipe);
+router.post("/:id/unpin", authMiddleware, recipeController.unpinRecipe);
+router.get("/pinned/me", authMiddleware,  recipeController.getPinnedRecipes);
+module.exports = router;
+>>>>>>> parent of 23d9e11 (update)

@@ -16,7 +16,15 @@ export default function Dashboard({ currentUserId }) {
   const [viewingRecipeId, setViewingRecipeId] = useState(null);
 
   useEffect(() => {
+<<<<<<< HEAD
   const fetchData = async () => {
+=======
+    fetchRecipes();
+    fetchPinnedRecipes()
+  }, []);
+
+  const fetchRecipes = async () => {
+>>>>>>> parent of 23d9e11 (update)
     try {
       const { data: recipesData } = await API.get("/recipes");
       setRecipes(recipesData.filter(r => r.public || r.userId === currentUserId));
@@ -32,8 +40,21 @@ export default function Dashboard({ currentUserId }) {
       alert("Error fetching recipes");
     }
   };
+<<<<<<< HEAD
   fetchData();
 }, [currentUserId]);
+=======
+
+
+  const fetchPinnedRecipes = async () => {
+  try {
+    const { data } = await API.get("/recipes/pinned"); // backend route
+    setPinned(data.map(r => r._id)); // store only IDs
+  } catch (err) {
+    console.error("Error fetching pinned recipes", err);
+  }
+};
+>>>>>>> parent of 23d9e11 (update)
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
@@ -46,6 +67,7 @@ export default function Dashboard({ currentUserId }) {
     }
   };
 
+<<<<<<< HEAD
   /*const togglePin = (id) => {
     setPinned(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]);
   };*/
@@ -71,6 +93,14 @@ export default function Dashboard({ currentUserId }) {
   } catch (err) {
     console.error(err.response?.data || err);
     alert("Error pinning recipe");
+=======
+  const togglePin = async (id) => {
+  try {
+    const { data } = await API.post(`/recipes/${id}/pin`);
+    setPinned(data.pinned);
+  } catch (err) {
+    console.error("Error pinning recipe", err);
+>>>>>>> parent of 23d9e11 (update)
   }
 };
 
