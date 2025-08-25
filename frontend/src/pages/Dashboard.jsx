@@ -16,19 +16,24 @@ export default function Dashboard({ currentUserId }) {
   const [viewingRecipeId, setViewingRecipeId] = useState(null);
 
   useEffect(() => {
-    fetchRecipes();
-  }, []);
-
-  const fetchRecipes = async () => {
+  const fetchData = async () => {
     try {
-      const { data } = await API.get("/recipes");
-      // Show public recipes or recipes owned by current user
-      setRecipes(data.filter(r => r.public || r.userId === currentUserId));
+      const { data: recipesData } = await API.get("/recipes");
+      setRecipes(recipesData.filter(r => r.public || r.userId === currentUserId));
+
+      // Fetch pinned from backend
+      const token = localStorage.getItem("token");
+      const { data: pinnedData } = await API.get("/users/pinned", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPinned(pinnedData.map(r => r._id)); // only store IDs
     } catch (err) {
+      console.error(err.response?.data || err);
       alert("Error fetching recipes");
     }
   };
-  
+  fetchData();
+}, [currentUserId]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
@@ -41,9 +46,33 @@ export default function Dashboard({ currentUserId }) {
     }
   };
 
-  const togglePin = (id) => {
+  /*const togglePin = (id) => {
     setPinned(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]);
-  };
+  };*/
+
+  const togglePin = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    const { data: updatedPins } = await API.patch(`/users/pinned/${id}`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    
+
+    const updatedPinIds = updatedPins.map(r => r._id || r);
+
+    // Update state
+    setPinned(updatedPinIds);
+
+    // Re-sort recipes
+    setRecipes(prev => [
+      ...prev.filter(r => updatedPinIds.includes(r._id)),
+      ...prev.filter(r => !updatedPinIds.includes(r._id))
+    ]);
+  } catch (err) {
+    console.error(err.response?.data || err);
+    alert("Error pinning recipe");
+  }
+};
 
   const handleEdit = (recipe) => {
     setEditingRecipeId(recipe._id);
@@ -85,7 +114,7 @@ export default function Dashboard({ currentUserId }) {
 
     {/* Left Arrow */}
     <button
-      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 color-black rounded-full p-2"
       onClick={() =>
         document.getElementById("pinnedSlider").scrollBy({ left: -300, behavior: "smooth" })
       }
@@ -120,7 +149,7 @@ export default function Dashboard({ currentUserId }) {
 
     {/* Right Arrow */}
     <button
-      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2"
+      className="absolute right-2 top-1/2 -translate-y-1/2 z-10  rounded-full p-2"
       onClick={() =>
         document.getElementById("pinnedSlider").scrollBy({ left: 300, behavior: "smooth" })
       }

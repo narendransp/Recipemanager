@@ -24,7 +24,7 @@ function App() {
         <Route path="/edit-recipe/:id" element={<EditRecipe />} />
           <Route 
           path="/my-recipes" 
-          element={isLoggedIn ? <MyRecipes /> : <Navigate to="/login" />} 
+          element={isLoggedIn ? <MyRecipes currentUserId={localStorage.getItem("userId")} /> : <Navigate to="/login" />} 
         />
         <Route path="/layout" element={<Layout />} />
       </Routes>

@@ -18,7 +18,7 @@ export default function EditRecipeOverlay({ recipeId, onClose, onUpdate }) {
       const { data } = await API.get(`/recipes/${recipeId}`, {
         headers: { Authorization: `Bearer ${token}` }, // ⬅️ send token
       });
-
+        console.log("👉 EditRecipe fetched recipe:", data);
       setTitle(data.title || "");
       setIngredients(data.ingredients ? data.ingredients.join(", ") : "");
       setInstructions(data.instructions || "");

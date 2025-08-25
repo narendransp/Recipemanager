@@ -1,7 +1,10 @@
 import React from "react";
 
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-   const isOwner =
+   
+  
+   console.log("RecipeCard props:", { recipe, currentUserId });
+  const isOwner =
   recipe.user?.toString() === currentUserId?.toString() ||
   recipe.user?._id?.toString() === currentUserId?.toString();// Check if logged-in user owns the recipe
 
@@ -10,10 +13,10 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
       {/* Recipe Image */}
       {recipe.image ? (
         <img
-          src={`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
-          alt={recipe.title}
-          className="h-40 w-full object-cover"
-        />
+  src={`${import.meta.env.VITE_API_URL}${recipe.image}`}
+  alt={recipe.title}
+  className="h-40 w-full object-cover"
+/>
       ) : (
         <div className="h-40 w-full bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
@@ -63,7 +66,11 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           </button>
 
           {/* Only show Edit/Delete if user is owner */}
- 
+
+
+          {isOwner && (
+            <>
+
               <button
                 onClick={() => onEdit(recipe)}
                 className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
@@ -77,6 +84,9 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
               >
                 Delete
               </button>
+              </>
+          )}
+
         </div>
       </div>
     </div>

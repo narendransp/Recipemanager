@@ -9,7 +9,10 @@ export default function ViewRecipeModal({ isOpen, onClose, recipeId }) {
 
     const fetchRecipe = async () => {
       try {
-        const { data } = await API.get(`/recipes/${recipeId}`); // fetch single recipe
+        const token = localStorage.getItem("token");
+        const { data } = await API.get(`/recipes/${recipeId}`,{
+           headers: { Authorization: `Bearer ${token}` },
+        }); // fetch single recipe
         setRecipe(data);
       } catch (err) {
         alert("Error fetching recipe");
@@ -40,7 +43,7 @@ export default function ViewRecipeModal({ isOpen, onClose, recipeId }) {
     {recipe.image && (
       <div className="w-full h-64 md:h-80 overflow-hidden rounded-xl mb-4">
         <img
-          src={`${import.meta.env.VITE_API_URL}${recipe.image}`}
+          src= {`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
           alt={recipe.title}
           className="w-full h-full object-cover"
         />
