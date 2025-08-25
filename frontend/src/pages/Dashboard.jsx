@@ -17,6 +17,7 @@ export default function Dashboard({ currentUserId }) {
 
   // Fetch recipes & pinned recipes
   useEffect(() => {
+<<<<<<< HEAD
     const fetchData = async () => {
       try {
         const { data: recipesData } = await API.get("/recipes");
@@ -34,6 +35,31 @@ export default function Dashboard({ currentUserId }) {
         alert("Error fetching recipes");
       }
     };
+=======
+    fetchRecipes();
+    fetchPinnedRecipes()
+  }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const { data } = await API.get("/recipes");
+      // Show public recipes or recipes owned by current user
+      setRecipes(data.filter(r => r.public || r.userId === currentUserId));
+    } catch (err) {
+      alert("Error fetching recipes");
+    }
+  };
+
+
+  const fetchPinnedRecipes = async () => {
+  try {
+    const { data } = await API.get("/recipes/pinned"); // backend route
+    setPinned(data.map(r => r._id)); // store only IDs
+  } catch (err) {
+    console.error("Error fetching pinned recipes", err);
+  }
+};
+>>>>>>> parent of 23d9e11 (update)
 
     fetchData();
   }, [currentUserId]);
@@ -50,6 +76,7 @@ export default function Dashboard({ currentUserId }) {
     }
   };
 
+<<<<<<< HEAD
   // Toggle pinned state
   const togglePin = async (id) => {
     try {
@@ -74,6 +101,16 @@ export default function Dashboard({ currentUserId }) {
       alert("Error pinning recipe");
     }
   };
+=======
+  const togglePin = async (id) => {
+  try {
+    const { data } = await API.post(`/recipes/${id}/pin`);
+    setPinned(data.pinned);
+  } catch (err) {
+    console.error("Error pinning recipe", err);
+  }
+};
+>>>>>>> parent of 23d9e11 (update)
 
   const handleEdit = (recipe) => {
     setEditingRecipeId(recipe._id);
