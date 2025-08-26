@@ -12,30 +12,28 @@ export default function EditRecipeOverlay({ recipeId, onClose, onUpdate }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const fetchRecipe = async () => {
-    try {
-      const token = localStorage.getItem("token"); // ⬅️ add this
-      const { data } = await API.get(`/recipes/${recipeId}`, {
-        headers: { Authorization: `Bearer ${token}` }, // ⬅️ send token
-      });
-        console.log("👉 EditRecipe fetched recipe:", data);
-      setTitle(data.title || "");
-      setIngredients(data.ingredients ? data.ingredients.join(", ") : "");
-      setInstructions(data.instructions || "");
-      setTags(data.tags ? data.tags.join(", ") : "");
-      setIsPublic(data.public ?? true);
-      if (data.image) setPreview(`https://recipemanager-4g1t.onrender.com/api${data.image}`);
-    } catch (err) {
-      console.error(err);
-      alert("Error fetching recipe");
-      onClose();
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (recipeId) {
+    API.get(`/recipes/${recipeId}`)
+      .then(({ data }) => {
+        setTitle(data.title);
+        setDescription(data.description);
+        setIngredients(JSON.stringify(data.ingredients));
+        setInstructions(data.instructions);
+        setTags(JSON.stringify(data.tags));
 
-  if (recipeId) fetchRecipe();
+        if (data.image) {
+          // ✅ Dynamic preview (works for dev + prod)
+          const baseURL =
+            process.env.NODE_ENV === "production"
+              ? "https://recipemanager-4g1t.onrender.com"
+              : "http://localhost:5000";
+          setPreview(`${baseURL}${data.image}`);
+        }
+      })
+      .catch((err) => console.error(err));
+  }
 }, [recipeId]);
+
     
 
   const handleImageChange = (e) => {

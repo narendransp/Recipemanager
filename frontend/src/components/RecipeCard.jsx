@@ -1,23 +1,29 @@
 import React from "react";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_URL;
+
+
 const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, currentUserId }) => {
-   
-  
-   console.log("RecipeCard props:", { recipe, currentUserId });
+  console.log("RecipeCard props:", { recipe, currentUserId });
+
+  // Check if logged-in user owns the recipe
   const isOwner =
-  recipe.user?.toString() === currentUserId?.toString() ||
-  recipe.user?._id?.toString() === currentUserId?.toString();// Check if logged-in user owns the recipe
+    recipe.user?.toString() === currentUserId?.toString() ||
+    recipe.user?._id?.toString() === currentUserId?.toString();
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform transform hover:scale-105 w-72 h-[500px] flex-shrink-0">
+      
       {/* Recipe Image */}
       {recipe.image ? (
-  <img
-    src={`https://recipemanager-4g1t.onrender.com/api${recipe.image}`}
-    alt={recipe.title}
-    className="h-40 w-full object-cover"
-  />
-) : (
+        <img
+  src={recipe.image ? `http://localhost:5000/uploads/${recipe.image}` : "/default.png"}
+  alt={recipe.title}
+  className="recipe-img"
+/>
+
+      ) : (
         <div className="h-40 w-full bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
         </div>
@@ -64,12 +70,10 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
           >
             View
           </button>
+
           {/* Only show Edit/Delete if user is owner */}
-
-
           {isOwner && (
             <>
-
               <button
                 onClick={() => onEdit(recipe)}
                 className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors"
@@ -83,26 +87,8 @@ const RecipeCard = ({ recipe, pinned, togglePin, handleDelete, onEdit, onView, c
               >
                 Delete
               </button>
-              </>
+            </>
           )}
-
-          {/* Edit button */}
-          <button
-            onClick={() =>  onEdit(recipe)}
-            disabled={!isOwner}
-            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
-          >
-            Edit
-          </button>
-
-          {/* Delete button */}
-          <button
-            onClick={() =>  handleDelete(recipe._id)}
-            disabled={!isOwner}
-            className="flex-1 text-center px-3 py-2 bg-black text-white rounded-lg hover:bg-red-600 transition-colors "
-          >
-            Delete
-          </button>
         </div>
       </div>
     </div>

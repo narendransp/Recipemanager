@@ -7,30 +7,30 @@ import AddRecipeModal from "../components/AddRecipeModal";
 
 export default function MyRecipes({ currentUserId }) {
   const [recipes, setRecipes] = useState([]);
-  const [pinned, setPinned] = useState([]); // now synced with backend
+  const [pinned, setPinned] = useState([]); 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingRecipeId, setEditingRecipeId] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [viewingRecipeId, setViewingRecipeId] = useState(null);
 
-  // Fetch recipes + pinned on load
+  // ✅ Fetch recipes + pinned
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        // ✅ Fetch all my recipes
+        // Fetch all my recipes
         const { data: recipesData } = await API.get("/recipes/my-recipes", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setRecipes(recipesData);
+        setRecipes(recipesData || []);
 
-        // ✅ Fetch pinned recipes
-        const { data: pinnedData } = await API.get("/users/pinned", {
+        // Fetch pinned
+        const { data: pinnedData } = await API.get("/recipes/pinned/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setPinned(pinnedData.map((r) => r._id)); // store IDs
+        setPinned((pinnedData || []).map((r) => r._id.toString()));
       } catch (err) {
         console.error(err.response?.data || err);
         alert("Error fetching your recipes");
@@ -39,6 +39,7 @@ export default function MyRecipes({ currentUserId }) {
     fetchData();
   }, []);
 
+  // ✅ Delete recipe
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
     try {
@@ -47,15 +48,16 @@ export default function MyRecipes({ currentUserId }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setRecipes(recipes.filter((r) => r._id !== id));
-      setPinned((prev) => prev.filter((p) => p !== id)); // also remove from pinned
+      setRecipes((prev) => prev.filter((r) => r._id.toString() !== id.toString()));
+      setPinned((prev) => prev.filter((p) => p.toString() !== id.toString()));
       alert("Recipe deleted successfully!");
     } catch (err) {
+      console.error(err.response?.data || err);
       alert("Error deleting recipe");
     }
   };
 
-  // ✅ Toggle pin synced with backend
+  // ✅ Toggle pin
   const togglePin = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -63,32 +65,43 @@ export default function MyRecipes({ currentUserId }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // API returns updated pinned list
-      setPinned(data.map((r) => r.toString()));
+      setPinned((data || []).map((r) => r.toString()));
     } catch (err) {
       console.error(err.response?.data || err);
       alert("Error updating pinned recipes");
     }
   };
 
+  // ✅ Open edit modal
   const handleEdit = (recipe) => {
     setEditingRecipeId(recipe._id);
     setIsEditModalOpen(true);
   };
 
+  // ✅ Open view modal
   const handleView = (recipe) => {
     setViewingRecipeId(recipe._id);
     setIsViewModalOpen(true);
   };
 
+  // ✅ Add recipe
   const handleAdd = (newRecipe) => {
-    setRecipes([newRecipe, ...recipes]);
+    setRecipes((prev) => [newRecipe, ...prev]);
+    setIsAddModalOpen(false);
+  };
+
+  // ✅ Update after edit
+  const handleUpdate = (updatedRecipe) => {
+    setRecipes((prev) =>
+      prev.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
+    );
+    setIsEditModalOpen(false);
   };
 
   // ✅ Sort recipes: pinned first
   const sortedRecipes = [
-    ...recipes.filter((r) => pinned.includes(r._id)), // pinned on top
-    ...recipes.filter((r) => !pinned.includes(r._id)), // others
+    ...recipes.filter((r) => pinned.includes(r._id.toString())), 
+    ...recipes.filter((r) => !pinned.includes(r._id.toString())), 
   ];
 
   if (recipes.length === 0)
@@ -112,7 +125,7 @@ export default function MyRecipes({ currentUserId }) {
           <RecipeCard
             key={recipe._id}
             recipe={recipe}
-            pinned={pinned.includes(recipe._id)}
+            pinned={pinned.includes(recipe._id.toString())}
             togglePin={togglePin}
             handleDelete={handleDelete}
             onEdit={handleEdit}
@@ -137,12 +150,7 @@ export default function MyRecipes({ currentUserId }) {
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           recipeId={editingRecipeId}
-          onUpdate={(updatedRecipe) => {
-            setRecipes(
-              recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
-            );
-            setIsEditModalOpen(false);
-          }}
+          onUpdate={handleUpdate}
         />
       )}
 
